@@ -1,6 +1,7 @@
 package game;
 
 import type.PlayerType;
+
 import java.util.Scanner;
 
 public class Main {
@@ -17,37 +18,54 @@ public class Main {
             System.out.println("4. Exit");
             System.out.print("Choice: ");
 
-            int choice = Integer.parseInt(scanner.nextLine());
-
-            if (choice == 4) {
-                System.out.println("Bye!");
-                break;
-            }
-
-            System.out.print("Depth (1-10): ");
-            int depth = Integer.parseInt(scanner.nextLine());
-
-            System.out.print("Debug? (1=yes, 0=no): ");
-            int d = Integer.parseInt(scanner.nextLine());
-            boolean debug = (d == 1);
+            int choice = scanner.nextInt();
 
             PlayerType t1, t2;
 
-            if (choice == 1) {
-                t1 = PlayerType.HUMAN;
-                t2 = PlayerType.COMPUTER;
-            } else if (choice == 2) {
-                t1 = PlayerType.COMPUTER;
-                t2 = PlayerType.HUMAN;
-            } else {
-                t1 = PlayerType.COMPUTER;
-                t2 = PlayerType.COMPUTER;
+            switch (choice) {
+                case 1:
+                    t1 = PlayerType.HUMAN;
+                    t2 = PlayerType.COMPUTER;
+                    break;
+                case 2:
+                    t1 = PlayerType.COMPUTER;
+                    t2 = PlayerType.HUMAN;
+                    break;
+                case 3:
+                    t1 = PlayerType.COMPUTER;
+                    t2 = PlayerType.COMPUTER;
+                    break;
+                case 4:
+                    System.out.println("Bye!");
+                    return;
+                default:
+                    System.out.println("Invalid choice!\n");
+                    continue;
             }
+
+            System.out.print("Depth (1-10): ");
+            int depth = scanner.nextInt();
+            while (depth > 10 || depth < 1) {
+                System.out.println("Invalid input");
+                System.out.println("Depth (1-10): ");
+                depth = scanner.nextInt();
+            }
+
+            System.out.print("Debug? (1=yes, 0=no): ");
+            int d = scanner.nextInt();
+            while (d != 0 && d != 1) {
+                System.out.println("Invalid input");
+                System.out.print("Debug? (1=yes, 0=no): ");
+                d=scanner.nextInt();
+            }
+            boolean debug = (d == 1);
+
 
             GameController game = new GameController(t1, t2, depth, debug);
             game.start();
 
-            System.out.println("\nPress Enter...");
+            System.out.println("\nPress Enter to continue...");
+            scanner.nextLine();
             scanner.nextLine();
         }
     }
