@@ -7,7 +7,7 @@ import java.util.List;
 public class Board {
 
     public static final int SIZE = 30;
-    public static final int PAWNS = 7;
+    public static final int PAWNS = 3;
 
     public Square[] squares;
     public Player player1;
@@ -213,8 +213,8 @@ public class Board {
         for (int i = 20; i <= 29; i++) System.out.print(cell(i) + " ");
         System.out.println();
 
-        System.out.println("\nP1(O): " + player1.exited + "/7");
-        System.out.println("P2(X): " + player2.exited + "/7");
+        System.out.println("\nP1(O): " + player1.exited + "/"+ player1.pawns.size());
+        System.out.println("P2(X): " + player2.exited + "/"+ player2.pawns.size());
     }
 
     private String cell(int i) {
