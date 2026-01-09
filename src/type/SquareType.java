@@ -1,4 +1,11 @@
 package type;
 
-public class SquareType {
+public enum SquareType {
+    NORMAL,
+    REBIRTH,
+    HAPPINESS,
+    WATER,
+    THREE_TRUTHS,
+    RE_ATOUM,
+    HORUS
 }
