@@ -7,7 +7,7 @@ import java.util.List;
 public class Board {
 
     public static final int SIZE = 30;
-    public static final int PAWNS = 7;
+    public static final int PAWNS = 3;
 
     public Square[] squares;
     public Player player1;
@@ -40,7 +40,6 @@ public class Board {
 
             int from = pawn.position;
 
-            // waiting pawn
             if (pawn.waitingFor != 0) {
                 if (pawn.waitingFor == -1 || pawn.waitingFor == roll) {
                     Move m = new Move(pawn, from, -1);
@@ -52,9 +51,8 @@ public class Board {
 
             int to = from + roll;
 
-            // off board - check exit
             if (to >= SIZE) {
-                if (to == SIZE && from >= 25) {
+                if (to == SIZE && from == 25) {
                     Move m = new Move(pawn, from, -1);
                     m.isExit = true;
                     moves.add(m);
@@ -62,16 +60,13 @@ public class Board {
                 continue;
             }
 
-            // cant jump over happiness
             if (from < 25 && to > 25) continue;
 
-            // cant land on own pawn
             if (squares[to].occupant != null &&
                     squares[to].occupant.owner.id == player.id) continue;
 
             Move m = new Move(pawn, from, to);
 
-            // swap
             if (squares[to].occupant != null &&
                     squares[to].occupant.owner.id != player.id) {
                 m.isSwap = true;
@@ -84,7 +79,6 @@ public class Board {
     }
 
     public void doMove(Move move) {
-        // exit
         if (move.isExit) {
             squares[move.from].occupant = null;
             move.pawn.position = -1;
@@ -97,7 +91,6 @@ public class Board {
         int to = move.to;
         Pawn pawn = move.pawn;
 
-        // swap
         if (move.isSwap) {
             Pawn other = squares[to].occupant;
             other.position = from;
@@ -109,7 +102,6 @@ public class Board {
         pawn.position = to;
         squares[to].occupant = pawn;
 
-        // special squares
         SquareType type = squares[to].type;
 
         if (type == SquareType.WATER) {
@@ -213,8 +205,8 @@ public class Board {
         for (int i = 20; i <= 29; i++) System.out.print(cell(i) + " ");
         System.out.println();
 
-        System.out.println("\nP1(O): " + player1.exited + "/7");
-        System.out.println("P2(X): " + player2.exited + "/7");
+        System.out.println("\nP1(O): " + player1.exited + "/"+ player1.pawns.size());
+        System.out.println("P2(X): " + player2.exited + "/"+ player2.pawns.size());
     }
 
     private String cell(int i) {

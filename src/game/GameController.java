@@ -37,16 +37,26 @@ public class GameController {
 
         board.print();
 
-        while (player1.exited < 7 && player2.exited < 7) {
+        while (true) {
             playTurn();
 
+            // check win after each turn
+            if (player1.exited == Board.PAWNS) {
+                System.out.println("\n=== GAME OVER ===");
+                System.out.println("Player 1 (O) WINS!");
+                break;
+            }
+
+            if (player2.exited == Board.PAWNS) {
+                System.out.println("\n=== GAME OVER ===");
+                System.out.println("Player 2 (X) WINS!");
+                break;
+            }
+
+            // switch player
             if (current.id == 1) current = player2;
             else current = player1;
         }
-
-        System.out.println("\nGame Over!");
-        if (player1.exited == 7) System.out.println("Player 1 wins!");
-        else System.out.println("Player 2 wins!");
     }
 
     private void playTurn() {
@@ -60,6 +70,7 @@ public class GameController {
         if (moves.isEmpty()) {
             System.out.println("No moves");
             board.punishWaiting(current, roll, null);
+            board.print();
             return;
         }
 
@@ -71,14 +82,12 @@ public class GameController {
                 System.out.println((i + 1) + ". " + moves.get(i));
             }
 
-            int choice = -1;
+            System.out.print("Choose: ");
+            int choice = scanner.nextInt();
             while (choice < 1 || choice > moves.size()) {
+                System.out.println("Enter 1-" + moves.size());
                 System.out.print("Choose: ");
-                try {
-                    choice = Integer.parseInt(scanner.nextLine());
-                } catch (Exception e) {
-                    choice = -1;
-                }
+                choice = scanner.nextInt();
             }
             chosen = moves.get(choice - 1);
         } else {
